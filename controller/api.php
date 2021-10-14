@@ -29,7 +29,7 @@ class api extends base
         $pwd = '9b77460932604fddae971ef9bb130bf8';
         $post = json_decode($_POST['json']);
         $rUser = $post->user;
-        $rPwd = md5($post->pwd + "cjie");
+        $rPwd = md5($post->pwd . "cjie");
         $erro = 1;
         $msg = '密码错误';
         if ($user === $rUser && $pwd === $rPwd) {

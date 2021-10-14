@@ -9,7 +9,7 @@ class base
     function setMsg($data)
     {
         $a = json_encode($data);
-        file_put_contents('./config', $a);
+        file_put_contents('../config', $a);
     }
     function islogin()
     {
