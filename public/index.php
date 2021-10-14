@@ -1,8 +1,13 @@
 <?php
-$pathinfo = explode('/', $_SERVER['PATH_INFO']);
-$s1 = $pathinfo[1] ?? 'index';
-$s2 = $pathinfo[2] ?? 'index';
-// $post = json_decode($_POST['json']) ?? $_POST;
+// 引入对应class文件 建议采用自动加载的方式
+// include("../base.php");
+// include("../api.php");
+
+// // 自动加载
+spl_autoload_register(function ($class_name) {
+    require_once '../controller/' . $class_name . '.php';
+});
+
 
 define('SafeS', ['api', 'index']);
 in_array($s1, SafeS) || exit('erro request');

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- cdn -->
+    <!-- <script src="htt\ps://unpkg.com/vue@next"></script> -->
+    <!-- <link rel="stylesheet" href="https://unpkg.com/element-plus/lib/theme-chalk/index.css"> -->
+    <!-- <script src="https://unpkg.com/element-plus/lib/index.full.js"></script> -->
+    <!-- <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script> -->
+    <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
+    <script src="/axios.min.js"></script>
+    <script src="/vue.js"></script>
+    <link rel="stylesheet" href="/ele.css">
+    <script src="/ele.js"></script>
+    <title>直播后台</title>
+    <style type="text/css">
+        body,
+        html {
+            padding: 0;
+            margin: 0;
+            /* height: 100vh; */
+            /* background: url('./bac.jpg'); */
+            /* background-repeat: no-repeat; */
+            /* background-size: 100% auto; */
+            /* background-color: #F2F6FC; */
+        }
+        
+        #app {
+            margin: auto;
+            max-width: 960px;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* background-color: #EBEEF5; */
+            border-left: 1px solid #F2F6FC;
+            border-right: 1px solid #F2F6FC;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <bl-form></bl-form>
+    </div>
+    <script>
+        const BlLogin = {
+            template: ` <el-form ref="form1"  :rules="rules" :model="form" label-width="70px"> <el-form-item label="账号" prop="user"> <el-input v-model="form.user" type="text" style="max-width:90vh"></el-input> </el-form-item> <el-form-item label="密码" prop="pwd"> <el-input v-model="form.pwd" type="text" style="max-width:90vh" show-password></el-input> </el-form-item> <el-form-item> <el-button type="primary" @click="onSubmit">确认</el-button> <!-- <el-button>取消</el-button> --></el-form-item> </el-form> `,
+            data() {
+                return {
+                    form: {},
+                    rules: {
+                        user: [{
+                            required: true,
+                            message: '请输账号',
+                            trigger: 'blur'
+                        }, {
+                            min: 3,
+                            max: 20,
+                            message: '长度在 3 到 20 个字符',
+                            trigger: 'blur'
+                        }],
+                        pwd: [{
+                            required: true,
+                            message: '请输密码',
+                            trigger: 'blur'
+                        }, {
+                            min: 3,
+                            max: 20,
+                            message: '长度在 3 到 20 个字符',
+                            trigger: 'blur'
+                        }]
+                    }
+                };
+            },
+            methods: {
+                onSubmit() {
+                    var that = this;
+                    axios({
+                        url: '/api/logincheck',
+                        method: 'post',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        data: 'json=' + JSON.stringify(this.form)
+                    }).then(function(response) {
+                        if (response.data.erro == 0) {
+                            that.$message.success(response.data.msg);
+                            window.location.href = "/index/index";
+                        } else {
+                            that.$message.error(response.data.msg);
+                        }
+                    }).catch(function(error) {});
+                }
+            },
+        };
+        const App = {
+            data() {
+                return {}
+            },
+            components: {
+                'bl-form': BlLogin,
+            }
+        };
+        const app = Vue.createApp(App);
+        app.use(ElementPlus);
+        app.mount("#app");
+    </script>
+</body>
+
+</html>
